@@ -1,13 +1,28 @@
 public class Car {
-    String brand;
-    String model;
-    float engineVolume;
-    String bodyColor;
-    int year;
-    String city;
 
-    public Car(String brand, String model, float engineVolume, String bodyColor, int year, String city) {
-        if (brand == null){
+
+
+    private String brand;
+    private String model;
+    private float engineVolume;
+    private String bodyColor;
+    private int year;
+    private String city;
+
+    private String transmission;
+
+    private String registrationNumber;
+    private String bodyType;
+
+    private int numberOfSeats;
+
+    private String tireType;
+
+    private boolean correctRegistrationNumber = true;
+
+    public Car(String brand, String model, float engineVolume, String bodyColor, int year, String city,
+               String transmission, String registrationNumber, String bodyType, int numberOfSeats, String tireType) {
+        if (brand == null) {
             this.brand = "default";
         } else {
             this.brand = brand;
@@ -37,7 +52,50 @@ public class Car {
         } else {
             this.city = city;
         }
+        if (transmission == null) {
+            this.transmission = "default";
+        } else {
+            this.transmission = transmission;
+        }
+
+        if (bodyType == null) {
+            this.bodyType = "default";
+        } else {
+            this.bodyType = bodyType;
+        }
+
+
+        if (registrationNumber == null) {
+            this.registrationNumber = "x000xx000";
+        } else {
+            this.registrationNumber = registrationNumber;
+        }
+        if (this.registrationNumber.length() != 9) {
+            correctRegistrationNumber = false;
+        }
+        char[] chars = this.registrationNumber.toCharArray();
+        if (!Character.isAlphabetic(chars[0]) || (!Character.isAlphabetic(chars[4])) || (!Character.isAlphabetic(chars[5]))) {
+            correctRegistrationNumber = false;
+        }
+        if (!Character.isDigit(chars[1]) || !Character.isDigit(chars[2]) || !Character.isDigit(chars[3]) ||
+                !Character.isDigit(chars[6]) || !Character.isDigit(chars[7]) || !Character.isDigit(chars[8]) ) {
+            correctRegistrationNumber = false;
+        }
+        if (!correctRegistrationNumber) {
+            throw new RuntimeException("Некорекно указан номер авто");
+        }
+        if (numberOfSeats <= 0) {
+            this.numberOfSeats = 5;
+        } else {
+            this.numberOfSeats = numberOfSeats;
+        }
+        if (tireType == "Летние" || tireType == "Зимние") {
+            this.tireType = tireType;
+        } else {
+            this.tireType = "Летние";
+        }
     }
+
 
     public String getBrand() {
         return brand;
@@ -63,9 +121,67 @@ public class Car {
         return city;
     }
 
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public boolean isCorrectRegistrationNumber() {
+        return correctRegistrationNumber;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public String getBodyType() {
+        return bodyType;
+    }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public String getTireType() {
+        return tireType;
+    }
+
+
+    public void setEngineVolume(float engineVolume) {
+        this.engineVolume = engineVolume;
+    }
+
+    public void setBodyColor(String bodyColor) {
+        this.bodyColor = bodyColor;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
+    public void setTireType(String tireType) {
+        this.tireType = tireType;
+    }
+
     @Override
     public String toString() {
         return getBrand() + " " + getModel() + " , " + getYear() + " года выпуска, сборка в " + getCity() +
-                ", " + getBodyColor() + " цвет, обьем двигателя - " + getEngineVolume() + ".";
+                ", " + getBodyColor() + " цвет, обьем двигателя - " + getEngineVolume() + ",  коробка передач - "
+                 + getTransmission() + ", тип кузова - " + getBodyType() + " , регистрационный номер - " + getRegistrationNumber()
+                 + ", колличество мест - " + getNumberOfSeats() + ", шины - " + tireType ;
     }
+
+    public static void changeTireTipe (Car car) {
+        if (car.getTireType() == "Зимние") {
+            car.tireType = "Летние";
+        } else {
+            car.tireType = "Зимние";
+        }
+
+    }
+
+
 }
+
+
+
+
